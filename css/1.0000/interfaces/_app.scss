@@ -1,0 +1,204 @@
+
+$color-one: #52afe9;
+$color-two: #13216a;
+$color-three: #f3eda0;
+
+// eventually remove the colors file (just extra work to lookup) keep these in app
+@use "../themes/colors";
+// fonts should have several font options (easy to toggle fonts on/off)
+@use "../themes/fonts";
+@use "../themes/background";
+
+@use "../layouts/queries";
+@use "../layouts/document";
+@use "../layouts/section" with (
+    $container: queries.$xl
+);
+
+@use "../layouts/view" with (
+    $breakpoint: queries.$lg
+);
+@use "../layouts/group";
+@use "../layouts/copy";
+@use "../layouts/article";
+@use "../layouts/outline";
+
+@use "../templates/dtm";
+
+@use "../media/load-item";
+
+@use "../interfaces/header";
+@use "../interfaces/footer";
+
+@use "../components/icons";
+@use "../components/contain";
+@use "../components/title";
+@use "../components/list";
+@use "../components/button";
+@use "../components/banner" with (
+    $font-color: $color-two,
+    $background-color:  $color-three
+);
+@use "../../../Shared/css/template/dtm/components/fp-nav";
+
+@use "../utils/text";
+@use "../utils/defer";
+@use "../utils/delay-input";
+
+@mixin critical {
+    @include document.new;
+    @include view.new;
+
+    @include section.new;
+    @include section.space;
+    @include section.block;
+
+    @include group.new;
+    @include icons.new;
+
+    @include defer.new;
+    @include delay-input.new;
+    @include load-item.new;
+
+    @include fp-nav.new {
+        &__a--order {
+            background: #6c2134;
+
+            &:hover,
+            &:focus {
+                background: #c20f30;
+            }
+        }
+    }
+    @media (min-width: 600px) {
+        @include fp-nav.hide;
+    }
+
+    @include banner.new;
+    @include title.new {
+        &--sub {
+            font-size: 2.1em;
+            margin: 1em 0 0;
+            font-weight: 500;
+        }
+        strong {
+            font-weight: 800;
+        }
+    };
+    @include text.new;
+
+    @media (max-width: queries.$md) {
+        section .title {
+            font-size: 0.8em;
+        }
+    }
+
+    @include header.new;
+    @include header.nav;
+    @include header.nav-within;
+
+    @include contain.new;
+
+    #{contain.$select} {
+        &--logo {
+            @include contain.ratio(205/283);
+            max-width: 205px;
+        }
+    }
+
+    .\@b .logos {
+        min-width: 20rem;
+        padding: 0.5em;
+    }
+
+    @include button.pill;
+    @include button.helpers;
+    @include button.alt;
+
+    .center {
+        text-align: center;
+        .btn {
+            margin: 1.3em auto;
+        }
+    }
+
+    .header {
+        background: linear-gradient(to bottom, #0278c1, #4aa6df);
+        color: white;
+    }
+
+    .hero {
+        background: #4aa6df;
+    }
+
+    @media (max-width: 800px) {
+        .dtm .hero {
+            &__group {
+                margin: 0;
+                > * {
+                    margin: 1rem;
+                }
+            }
+            &__price {
+                flex-wrap: wrap;
+                .btn {
+                    font-size: 1.5em;
+                }
+            }
+        }
+    }
+
+    @include background.new;
+    @include background.contrast;
+    @include list.new {
+        &--bullet {
+            @include list.bullet;
+        }
+        &--simple {
+            font-weight: 500;
+            color: black;
+            font-size: 0.9em;
+            margin-top: 0.5em !important;
+            margin-bottom: 0.5em !important;
+            li {
+                padding: 0;
+            }
+        }
+    }
+
+    @content;
+}
+
+@mixin defer {
+    @include copy.new;
+    @include footer.new;
+    @include background.dark;
+    @include list.grid;
+
+    @content;
+}
+
+@mixin landing-page {
+    @include defer {
+        @include article.new;
+        @include list.disc;
+        @include outline.new;
+        @include dtm.remove-form-border;
+
+        #{contain.$select} {
+            &--square {
+                @include contain.ratio(1/1);
+            }
+        }
+    }
+
+    @content;
+}
+
+@mixin template {
+    @include defer {
+        @include header.remove-navbar;
+        @include dtm.new;
+        @include dtm.layout;
+    }
+}

@@ -1,0 +1,229 @@
+@use "../layouts/queries";
+@use "sass:string";
+@use "../../../Shared/css/template/dtm/utils/colors";
+
+$select: ".list" !default;
+
+@mixin new {
+    #{$select} {
+        margin-left: 1.5rem;
+        list-style: none;
+
+        > li {
+            display: list-item;
+            break-inside: avoid;
+
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+        }
+
+        @content;
+    }
+}
+
+@mixin bullet($bullet: "•") {
+    > li {
+        &::before {
+            display: inline-block;
+            content: $bullet;
+            margin-left: -1em;
+            width: 1em;
+            height: 1em;
+
+            @content;
+        }
+    }
+}
+
+@mixin grid($width: 20em, $gap: 2em) {
+    #{$select} {
+        &--grid {
+            column-width: $width;
+            column-rule: 1px solid;
+            list-style: none;
+            margin: 0 -#{$gap};
+            overflow: hidden;
+
+            > li {
+                break-inside: avoid;
+                margin: 0 #{$gap};
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin block {
+    #{$select} {
+        &--block {
+            list-style: none;
+            font-size: 16px;
+
+            > li {
+                &::before {
+                    display: none;
+                }
+
+                &:not(:last-child) {
+                    margin-bottom: 1.5rem;
+                }
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin color($color: currentColor) {
+    > li {
+        &::before {
+            color: $color;
+        }
+    }
+}
+
+@mixin square {
+    #{$select} {
+        &--square {
+            @include bullet("■") {
+                margin-left: -1.5em;
+                width: 1.5em;
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin disc {
+    #{$select} {
+        &--disc {
+            @include bullet;
+
+            @content;
+        }
+    }
+}
+
+@mixin links {
+    #{$select} {
+        margin: 1.5rem auto;
+        list-style: none;
+        text-align: center;
+
+        > li {
+            a,
+            button {
+                padding: 0.25em;
+                display: block;
+                color: inherit;
+                font: inherit;
+            }
+            ::before {
+                display: none;
+            }
+        }
+
+        @media all and (min-width: queries.$lg) {
+            > li {
+                display: inline-block;
+                margin: 0.5em 0;
+                border-right: 1px solid;
+                a,
+                button {
+                    padding: 0em 0.5em;
+                    text-decoration: underline;
+                }
+            }
+        }
+
+        @media all and (max-width: queries.$lg) {
+            text-align: left;
+            column-width: 20em;
+            column-rule: 1px solid;
+        }
+
+        > li {
+            &:last-child {
+                border: none;
+            }
+        }
+
+        @content;
+    }
+}
+
+@mixin prefix-icon {
+    #{$select} {
+        &--prefix-icon {
+            > li {
+                display: flex;
+                align-items: center;
+
+                &::before {
+                    flex: 0 0 auto;
+                    margin-right: 0.25em;
+                }
+            }
+        }
+    }
+}
+
+@mixin background-icon($url: "") {
+    @include bullet("") {
+        background: url($url) center center no-repeat;
+    }
+}
+
+@mixin cross {
+    #{$select} {
+        &--cross {
+            @include background-icon("/images/icon-cross.svg");
+        }
+    }
+}
+
+@mixin checkmark {
+    #{$select} {
+        &--checkmark {
+            @include background-icon("/images/icon-checkmark.svg");
+        }
+    }
+}
+
+@mixin checkmark-icon($background-color: black, $text-color: white) {
+    $text-color: colors.get-hsla($text-color, 1, false);
+
+    #{$select}--checkmark-icon {
+        li {
+            list-style: none;
+            position: relative;
+            // make sure to get rid of the ::marker
+            display: block;
+            &::before {
+                $character-code: e90c;
+                // content: unquote('"\\#{$character-code}"');
+                content: "";
+                background: #{$background-color} url("data:image/svg+xml;charset=utf8,\
+                %3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' preserveAspectRatio='xMidYMid'%3E\
+                    %3Cpath fill='#{$text-color}' d='M27 4l-15 15-7-7-5 5 12 12 20-20z'%3E%3C/path%3E\
+                %3C/svg%3E")
+                    no-repeat center center;
+                padding: 0.15em 0.25em 0;
+                border-radius: 100%;
+                background-size: 60%;
+                margin: 0 0.4em 0 0;
+                font-size: 0.75em;
+                position: absolute;
+                left: -2em;
+                top: 0.15em;
+                width: 1.5em;
+                height: 1.5em;
+
+                @content;
+            }
+        }
+    }
+}

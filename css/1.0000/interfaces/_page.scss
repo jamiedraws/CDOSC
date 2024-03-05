@@ -1,0 +1,154 @@
+@use "../templates/dtm";
+
+@use "../interfaces/app";
+@use "../interfaces/form";
+
+@use "../layouts/slide";
+@use "../layouts/hero";
+@use "../layouts/review";
+@use "../layouts/queries";
+@use "../layouts/group";
+
+@use "../components/callout";
+@use "../components/product-info";
+@use "../components/offer";
+@use "../components/contain";
+@use "../components/button";
+@use "../components/list";
+@use "../../../Shared/css/template/shoppingcart/components/copy";
+@use "../../../Shared/css/template/dtm/components/card";
+@use "../../../Shared/css/template/dtm/components/expando";
+
+@use "../themes/background";
+@use "../themes/colors";
+
+@mixin index($critical: false) {
+    @if $critical {
+        @include hero.base;
+        @include list.checkmark-icon(colors.$color-two, colors.$color-three);
+
+        @include offer.new;
+        @include slide.new;
+        @include background.light;
+        @include group.uses;
+
+        #{contain.$select} {
+            &--main {
+                @include contain.ratio(265/365) {
+                    background: black;
+                }
+            }
+        }
+
+        @content;
+    } @else {
+        @include app.landing-page {
+            @include group.steps;
+            @include group.exclusive;
+
+            @include product-info.new;
+            @include button.alt;
+            @include colors.accent;
+
+            @include callout.new;
+            @include review.new;
+            @include review.stars {
+                &__stars {
+                    max-width: 250px;
+                    margin: 0 auto;
+                }
+            }
+
+            .disclaimer {
+                text-align: center;
+            }
+
+        }
+
+        @content;
+    }
+}
+
+@mixin faq {
+    @include app.landing-page {
+        @include expando.new;
+        @include card.model(".card", colors.$first) {
+            &__copy {
+                @include copy.separate;
+            }
+        }
+        @content;
+    }
+}
+
+@mixin reviews {
+    @include app.landing-page {
+        @include review.stacked;
+        @include review.stars {
+        }
+
+        #{contain.$select} {
+            &--carly-k,
+            &--lisa-v,
+            &--jill-d {
+                @include contain.ratio(3/4);
+            }
+
+            &--carol-h {
+                @include contain.ratio(400/267);
+            }
+        }
+    }
+}
+
+@mixin checkout {
+    @include app.defer {
+        @include form.landing-page;
+    }
+}
+
+@mixin confirmation {
+    @include app.landing-page;
+    @include form.refer-a-friend {
+        #{form.$select} {
+            &__fieldset {
+                > * {
+                    &:first-child:last-child {
+                        flex: 0.3 1 30rem;
+                    }
+                }
+            }
+        }
+    }
+    @include dtm.layout;
+
+    @content;
+}
+
+@mixin refer-a-friend {
+    @include hero.base;
+    @include hero.product-round-border;
+
+    #{contain.$select} {
+        &--main {
+            @include contain.ratio(630/380) {
+                background: black;
+            }
+        }
+    }
+
+    @include form.refer-a-friend {
+        #{form.$select} {
+            &__fieldset {
+                margin: 0;
+            }
+        }
+    }
+
+    @content;
+}
+
+@mixin process-payment {
+    @include app.landing-page;
+    @include dtm.layout;
+}

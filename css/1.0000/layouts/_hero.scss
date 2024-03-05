@@ -1,0 +1,116 @@
+$select: ".hero" !default;
+$border-radius: 3rem !default;
+
+@use "../themes/colors";
+@use "../layouts/queries";
+
+@mixin base {
+    // main area layout
+    #{$select} {
+        $hero-gap: 2rem;
+
+        &__in {
+            max-width: 1100px;
+            padding: 0 1rem;
+
+        }
+        &__group {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 #{$hero-gap} 3rem;
+            justify-content: center;
+            align-items: center;
+
+            > * {
+                margin: 0 $hero-gap;
+                border-radius: $border-radius;
+                overflow: hidden;
+            }
+
+            .border {
+                border: 5px solid #13216a;
+            }
+        }
+        &__product {
+            flex: 0 1 265px;
+        }
+        
+        &__details {
+            background: colors.$color-three;
+            color: colors.$color-two;
+            font-weight: bold;
+            font-size: 1.25em;
+            padding: 1.5em 1em;
+            flex: 0 1 21em;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: center;
+        }
+        &__price {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            > * {
+                margin: 0.5em;
+            }
+        }
+
+        &__title {
+            font-size: 2em;
+            font-weight: bold;
+        }
+        
+        &__regular-price {
+            background: white;
+            color: #444444;
+            border: 1px solid #6c2134;
+            font-size: 1.2em;
+            padding: 0.25em 0.5em;
+            position: relative;
+            margin: 0.6em auto;
+            text-align: center;
+        }
+        
+        &__regular-price::after {
+            width: 96%;
+            margin: 0 auto;
+            position: absolute;
+            top: 49%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            display: block;
+            background: #bc0000;
+            content: "";
+        }
+
+        .list {
+            margin: 1em 0 1em 1.8em;
+        }
+
+        &__disclaimer {
+            font-size: 1.1rem;
+            text-align: center;
+            color: black;
+            margin: 1em 0;
+            font-weight: 500;
+        }
+
+    }
+}
+
+@mixin product-round-border {
+    #{$select} {
+        &__group {
+            margin-bottom: 0;
+            align-items: stretch;
+        }
+
+        &__product {
+            border-radius: $border-radius;
+        }
+
+        @content;
+    }
+}

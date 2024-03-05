@@ -1,0 +1,58 @@
+@use "../layouts/queries";
+
+$select: ".option" !default;
+
+@mixin new {
+    #{$select} {
+        display: flex;
+        border: 1px solid #a9a9a9;
+        padding: 1.5em 1em;
+        margin: 0 0 1rem;
+        font-size: 1.4rem;
+
+        &__radio {
+            margin-right: 1em;
+        }
+
+        &__title {
+            font-size: 1.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+            line-height: 1.2;
+            margin: 0 0 0.15em;
+        }
+
+        &__deal {
+            color: #11a393;
+        }
+
+        &__price {
+            font-size: 1.25em;
+        }
+
+        &__text {
+            flex: 0 1 40em;
+            padding-right: 2em;
+        }
+
+        @media (max-width: queries.$sm) {
+            flex-wrap: wrap;
+            font-size: 1.25rem;
+            &__radio {
+                flex: 0 1 8%;
+                margin-right: 0.1em;
+            }
+            &__text {
+                flex: 0 1 100%;
+                order: -1;
+                margin: 0 0 1em;
+            }
+            &__price {
+                flex: 1;
+                font-size: 1.1em;
+            }
+        }
+
+        @content;
+    }
+}

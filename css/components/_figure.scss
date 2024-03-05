@@ -1,0 +1,30 @@
+$select: ".figure" !default;
+
+@mixin index-card {
+    #{$select}--index-card {
+        display: flex;
+        flex-wrap: wrap;
+        > * {
+            flex: 0 1 100%;
+        }
+        picture {
+            border: none;
+        }
+        figcaption {
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0.5em 1em;
+            line-height: 1.1;
+            strong {
+                font-size: 2.25em;
+                margin: 0 0.25em 0 0;
+                text-transform: uppercase;
+            }
+        }
+        &-reverse {
+            flex-direction: row-reverse;
+        }
+        @content;
+    }
+}

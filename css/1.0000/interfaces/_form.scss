@@ -1,0 +1,55 @@
+$select: ".form" !default;
+
+@use "../templates/dtm";
+
+@use "../layouts/form";
+@use "../layouts/step1";
+
+@use "../components/payment";
+@use "../components/form-title";
+@use "../components/offer-details";
+@use "../../../Shared/css/template/shoppingcart/components/validate" with (
+    $attribute: [required]
+);
+@use "../../../Shared/css/template/shoppingcart/components/toast";
+
+@mixin landing-page {
+    @include dtm.new;
+    @include dtm.form;
+    @include dtm.ofrt;
+    @include dtm.layout;
+    @include dtm.processing-order-popup;
+    @include form-title.new;
+    @include offer-details.new;
+
+    @include dtm.fixes;
+    @include step1.new;
+    @include payment.new;
+
+    @media (max-width: 600px) {
+        .dtm .order,
+        .dtm .order > * {
+            margin: 0;
+            background: white;
+            padding: 0;
+            border: none;
+        }
+
+        #content_bottom {
+            margin: 0;
+        }
+    }
+}
+
+@mixin refer-a-friend {
+    @include form.new;
+    @include form.fieldset;
+    @include form.field-label;
+    @include form.lead;
+    @include validate.new;
+    @include toast.new;
+    @include toast.polite;
+    @include toast.theme-state;
+
+    @content;
+}

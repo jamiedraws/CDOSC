@@ -1,0 +1,42 @@
+$select: ".product-info" !default;
+
+@use "../layouts/queries";
+
+@mixin new {
+    #{$select} {
+        flex: 1;
+        text-align: center;
+
+        a {
+            position: relative;
+            z-index: 2;
+        }
+
+        picture {
+            margin: 0 auto;
+        }
+
+        p {
+            margin: 0.5em 0;
+        }
+
+        li {
+            margin-bottom: 0.15em;
+        }
+
+        &__copy {
+            text-align: left;
+            margin: 0 0 2rem;
+        }
+
+        @media (max-width: queries.$md) {
+            flex: 1 1 100%;
+
+            &__copy {
+                text-align: center;
+            }
+        }
+
+        @content;
+    }
+}

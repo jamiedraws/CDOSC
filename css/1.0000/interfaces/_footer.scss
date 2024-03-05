@@ -1,0 +1,20 @@
+@use "../components/list";
+
+$select: ".footer" !default;
+
+@mixin new {
+	#{$select} {
+		&__logo {
+			margin: auto;
+			max-width: 200px;
+		}
+
+		@include list.links;
+
+		&__copyright {
+			text-align: center;
+		}
+
+		@content;
+	}
+}

@@ -1,0 +1,1793 @@
+@use "sass:map";
+@use "sass:math";
+
+// microsite, store, splash, custom
+$site-type: "custom";
+
+// media query breakpoints
+$breakpoints: (
+    max: 1920px,
+    large: 1600px,
+    desktop: 1350px,
+    nav: 750px,
+    nav-max: 749px,
+    mobile: 750px,
+    mobile-narrow: 300px
+);
+
+// color theme
+$colors: (
+    primary: #13216a,
+    accent: #fff004,
+    extra: #00adee,
+    formHeaders: #13216a,
+    table: #13216a,
+    border: #6177f7
+);
+
+// fonts
+$font-reset: "Arial", "Helvetica", sans-serif;
+$fonts: (
+    main: (
+        montserrat,
+        sans-serif
+    ),
+    accent: (
+        source-sans-pro,
+        sans-serif
+    ),
+    gotham: (
+        gotham,
+        sans-serif
+    ),
+    gotham-ultra: (
+        gotham-ultra,
+        sans-serif
+    ),
+    gotham-black: (
+        "Gotham Black",
+        sans-serif
+    ),
+    reset: $font-reset
+);
+
+// logo size
+$logo-width: 465;
+$logo-height: 272;
+
+// background for header and banners
+$banner-background: linear-gradient(to bottom, #0185c9 0%, #39b9fc 100%);
+
+// ----------------------------------------------
+//      IMPORTS
+// ----------------------------------------------
+/*#region*/
+// scope adds desktop, mobile dtm class modifiers
+@use "../Shared/css/template/dtm/utils/scope";
+
+@use "../Shared/css/template/dtm/layouts/group";
+@use "../Shared/css/template/dtm/layouts/section" with
+    ($container: map.get($breakpoints, desktop));
+@use "../Shared/css/template/dtm/layouts/view";
+
+@use "../Shared/css/template/dtm/components/button";
+@use "../Shared/css/template/dtm/components/contain";
+@use "../Shared/css/template/dtm/components/offer";
+@use "../Shared/css/template/dtm/components/fp-nav";
+@use "../Shared/css/template/base/components/validate" with
+    ($attribute: [required]);
+@use "../Shared/css/template/shoppingcart/components/toast";
+
+@use "../Shared/css/template/dtm/themes/background";
+
+@use "interfaces/header-ui" with
+    (
+        $breakpoint: map.get($breakpoints, nav),
+        $breakpoint-max: map.get($breakpoints, nav-max)
+    );
+
+@use "layouts/document" with ($font-family: map.get($fonts, main));
+@use "layouts/nav";
+@use "layouts/hero";
+@use "layouts/slide";
+@use "layouts/carousel";
+@use "layouts/quote";
+@use "layouts/form";
+@use "layouts/sold-out";
+
+@use "components/list";
+@use "components/link";
+@use "components/skip-link";
+//@use "components/validate";
+@use "components/banner" with
+    ($background: map.get($colors, accent), $color: white);
+@use "components/background" as bg with
+    (
+        $desktop: map.get($breakpoints, mobile),
+        $mobile: map.get($breakpoints, mobile)
+    );
+@use "components/figure";
+@use "components/title";
+
+@use "../Shared/css/template/base/abstracts/vimeo-poster-player";
+@use "../Shared/css/template/base/abstracts/vimeo-player-button";
+
+@use "dependencies/dtm";
+
+@use "utilities/shadow";
+@use "utilities/text" with ($breakpoint: map.get($breakpoints, mobile));
+@use "../Shared/css/template/base/utils/unit-conversion";
+
+@use "section/header" with
+    (
+        $desktop-breakpoint: map.get($breakpoints, desktop),
+        $mobile-breakpoint: map.get($breakpoints, mobile),
+        $logo-size: #{$logo-width}px
+    );
+@use "section/features-benefits" with
+    (
+        $header-background: map.get($colors, accent),
+        $header-color: white,
+        $bullet-color: map.get($colors, accent)
+    );
+@use "section/step1";
+/*#endregion*/
+
+@include document.new;
+@include document.fonts;
+
+@include skip-link.new;
+
+@include view.new;
+@include view.set-anchor-position();
+
+// .section container
+@include section.new;
+@include section.border-box; // updates content-box with border-box
+@include section.block; // this adds vertical spacing
+@include section.separate; // adds spacing a hr between sections
+
+@include link.new;
+@include text.wrap;
+@include title.oxiclean;
+// form for the refer a friend page
+@include form.lead;
+@mixin refer-a-friend {
+    @include form.new;
+    @include form.fieldset;
+    @include form.field-label;
+    @include form.lead;
+    @include validate.new;
+    .message__valid {
+        @include validate.is-valid;
+    }
+    .message__invalid {
+        @include validate.is-invalid;
+    }
+    @include toast.new;
+    @include toast.polite;
+    @include toast.theme-state;
+
+    @content;
+}
+@include refer-a-friend;
+
+// slider
+@include slide.new {
+    &__item {
+        display: block;
+    }
+    &__nav button {
+        background: none;
+        border: none;
+        box-shadow: none;
+        width: 2em;
+        height: 2em;
+        padding: 0.25em;
+        transition: background 0.25s;
+        svg {
+            fill: white;
+            opacity: 0.25;
+            transition: opacity 0.25s;
+            @media all and (max-width: 1000px) {
+                height: 100%;
+            }
+        }
+        &:hover {
+            background: map-get($map: $colors, $key: accent);
+            svg {
+                fill: black;
+                opacity: 1;
+            }
+        }
+    }
+    &__prev {
+        svg {
+            transform: rotate(180deg);
+        }
+    }
+}
+@include slide.fade;
+@include carousel.new {
+    @media all and (max-width: 1000px) {
+        &__nav {
+            order: 1;
+        }
+    }
+}
+@include quote.new;
+
+@include sold-out.base;
+
+// fingerprint nav
+@include fp-nav.new;
+@media all and (min-width: map.get($breakpoints, nav)) {
+    @include fp-nav.hide;
+}
+
+/* add fingerprint nav */
+.fp-nav__a:hover,
+.fp-nav__a:focus {
+    background: #6894ff;
+}
+
+.fp-nav__a {
+    background: #1751db;
+    &--short {
+        padding-bottom: 1.5em;
+    }
+}
+
+.fp-nav__a--order {
+    background: #00adee;
+}
+
+.fp-nav__a--order:hover,
+.fp-nav__a--order:focus {
+    background: #087ba6;
+}
+
+// ----------------------------------------------
+//      ASPECT RATIOS (containers)
+// ----------------------------------------------
+/*#region*/
+@include contain.new {
+    &--hero-desktop {
+        @include contain.ratio(math.div(1920, 922));
+    }
+
+    &--hero-mobile {
+        @include contain.ratio(math.div(414, 390));
+    }
+
+    &--video {
+        @include contain.ratio(math.div(16, 9));
+        //background: #252525;
+    }
+
+    &--square {
+        @include contain.ratio(math.div(1, 1));
+    }
+
+    &--logo {
+        @include contain.ratio(math.div($logo-width, $logo-height));
+        max-width: #{$logo-width}px;
+    }
+
+    &--oxi-logo {
+        @include contain.ratio(math.div(107, 68));
+        max-width: 320px;
+    }
+
+    &--grease,
+    &--soap-scum {
+        @include contain.ratio(math.div(208, 170));
+        max-width: 208px;
+    }
+
+    &--dirt {
+        @include contain.ratio(math.div(299, 170));
+        max-width: 299px;
+    }
+
+    &--concentrated-refills {
+        @include contain.ratio(math.div(156, 222));
+        max-width: 156px;
+    }
+
+    &--two-bottles {
+        @include contain.ratio(math.div(337, 373));
+        max-width: 337px;
+    }
+
+    &--stars {
+        @include contain.ratio(math.div(210, 35));
+        max-width: 210px;
+        max-height: 35px;
+    }
+
+    &--product {
+        @include contain.ratio(math.div(502, 436));
+        max-width: 502px;
+    }
+
+    &--product-in-use {
+        @include contain.ratio(math.div(675, 413));
+        max-width: 675px;
+    }
+
+    &--ssl-badge {
+        max-width: 100px;
+        margin: 1em auto;
+    }
+}
+/*#endregion*/
+
+@include vimeo-poster-player.base;
+
+@include vimeo-player-button.base {
+    background: #252525;
+
+    &__play {
+        font-size: 2em;
+
+        &--is-playing {
+            @include vimeo-player-button.hide-play-state;
+        }
+    }
+}
+
+@media all and (max-width: 600px) {
+    // @include vimeo-player-button.hide-play-button;
+}
+
+.section {
+    &__in {
+        padding: 7rem 0;
+        position: relative;
+    }
+}
+
+@include banner.new {
+    color: white;
+    background: map-get($map: $colors, $key: primary);
+    font-family: map-get($fonts, main);
+    line-height: 1.6;
+
+    &__callout {
+        font-weight: normal;
+        border-bottom: 3px solid map-get($colors, accent);
+    }
+
+    &__callout-button {
+        // padding: 0.25em;
+        // background: white;
+        // color: black;
+        // outline: 2px solid map-get($colors, accent);
+        // outline-offset: 3px;
+        // padding: 0.25em;
+        // margin: 0 0.5em;
+        background: map-get($colors, accent);
+        border-radius: 1em;
+        padding: 0.4em 1em;
+        color: map-get($colors, primary);
+    }
+}
+
+// ----------------------------------------------
+//      HEADER
+// ----------------------------------------------
+/*#region*/
+@include header.new; // generic header component
+@include header.bottom-shadow; // adds standard box-shadow
+//@include header.edge-shadow;        // adds the shadow on the sides
+@include header.group; // adds flexbox layout model
+//@include header.overflow-logo;      // if there is a hanging/overlapping logo
+@include header-ui.nav;
+
+.header {
+    color: white;
+    background: $banner-background;
+    border: none;
+    //border-bottom: 3px solid map-get($colors, border);
+    font-weight: 500;
+
+    &__title {
+        font: italic 700 3rem/1 futura-pt, sans-serif;
+        flex: 1 1 615px;
+        text-transform: uppercase;
+        text-shadow: 0 0.1em 0.1em rgba(0, 0, 0, 0.75);
+        > * {
+            display: block;
+        }
+    }
+
+    .icon--cart {
+        max-width: 2em;
+        max-height: 2em;
+        margin-left: 1em;
+    }
+
+    @media all and (min-width: map.get($breakpoints, nav)) {
+        &__in {
+            overflow: hidden;
+        }
+        &__group {
+            justify-content: space-between;
+        }
+        .icon--cart {
+            fill: white;
+        }
+        @include header.overflow-logo;
+    }
+
+    @media all and (min-width: map.get($breakpoints, desktop)) {
+        padding-top: 3em;
+        padding-bottom: 1em;
+        &__in {
+            padding: 1rem 3rem;
+        }
+        & &__logo {
+            top: -1.6em;
+        }
+        &--banner {
+            padding-top: 1em;
+        }
+    }
+
+    @media all and (max-width: map.get($breakpoints, desktop)) {
+        &__logo {
+            margin: 0;
+            max-width: 18vw;
+            max-width: clamp(8em, 18vw, #{$logo-width}px);
+        }
+
+        &__title {
+            font-size: 3.7vw;
+            font-size: clamp(1rem, 3.7vw, 4rem);
+            flex-basis: auto;
+        }
+
+        &__button {
+            display: none;
+        }
+    }
+
+    @media all and (max-width: map-get($map: $breakpoints, $key: nav)) {
+        &__in {
+            padding: 0 0.5em;
+        }
+        .icon--cart {
+            display: none;
+        }
+    }
+}
+/*#endregion*/
+
+/*#region*/
+@include nav.no-borders;
+.nav {
+    &__list {
+        font-size: 1.2em;
+        text-transform: uppercase;
+    }
+    &__link {
+        position: relative;
+        text-decoration: none;
+        > span {
+            display: block;
+            position: relative;
+            &::before {
+                content: "";
+                position: absolute;
+                bottom: -0.5em;
+                left: 0;
+                right: 0;
+                display: block;
+                width: 100%;
+                height: 0.25em;
+                height: clamp(2px, 0.25em, 6px);
+                background: map-get($map: $colors, $key: accent);
+                border-radius: 0.15em;
+                opacity: 0;
+                transition: opacity 0.25s ease-in-out;
+            }
+        }
+        &:hover,
+        &:focus {
+            > span::before {
+                opacity: 1;
+            }
+        }
+        &--icon {
+            display: flex;
+            align-items: flex-end;
+        }
+    }
+    &__underlay,
+    &__pane {
+        margin: 0;
+    }
+    &__pane {
+        a:focus {
+            outline-color: transparent;
+        }
+    }
+    @media all and (min-width: map-get($map: $breakpoints, $key: nav)) {
+        &__link {
+            padding: 0.5em;
+        }
+        &__list {
+            align-items: flex-end;
+        }
+        &__pane {
+            flex: 0 1 37em;
+            margin-left: auto;
+        }
+        &__tier-first &__link {
+            flex-basis: auto;
+        }
+    }
+    @media all and (min-width: 1000px) {
+        &__pane {
+            flex: 0 1 800px;
+        }
+    }
+}
+
+@media all and (max-width: map-get($map: $breakpoints, $key: desktop)) {
+    .nav {
+        &__list {
+            font-size: 1em;
+            padding: 1em 0 1.5em;
+        }
+        &__link {
+            padding: 0.25em;
+        }
+    }
+}
+
+@media all and (min-width: map-get($map: $breakpoints, $key: nav)) {
+    @include nav.no-background;
+    .nav {
+        &__logo {
+            display: none;
+        }
+    }
+}
+
+@media all and (max-width: map-get($map: $breakpoints, $key: nav)) {
+    .nav {
+        &__pane {
+            max-width: 19em;
+            overflow: visible;
+            color: black;
+        }
+        &__toggle:checked ~ &__label {
+            color: black;
+        }
+        &__logo {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 18em;
+        }
+        &__list {
+            padding-top: 14em;
+        }
+        &__pane &__link {
+            justify-content: flex-end;
+            font-size: 1.25em;
+            padding-right: 0.5em;
+        }
+    }
+}
+/*#endregion*/
+
+.text-wrap > * {
+    display: block;
+}
+
+// ----------------------------------------------
+//      BUTTONS
+// ----------------------------------------------
+/*#region*/
+//@include scope.for-template {
+@include button.model {
+    font-family: map-get($map: $fonts, $key: montserrat);
+    font-weight: 800;
+    -webkit-font-smoothing: antialiased;
+    color: white;
+    text-transform: uppercase;
+    background: map-get($map: $colors, $key: primary);
+
+    @media all and (min-width: map.get($breakpoints, desktop)) {
+        font-size: 2rem;
+    }
+
+    @media all and (max-width: map.get($breakpoints, mobile-narrow)) {
+        font-size: 8vw;
+    }
+
+    transition: background 0.25s, color 0.25s ease-in-out;
+
+    &:hover,
+    &:focus {
+        color: white;
+        background: black;
+    }
+
+    &--order {
+        background: map-get($map: $colors, $key: extra);
+        &:hover,
+        &:focus {
+            color: map-get($map: $colors, $key: primary);
+            background: map-get($map: $colors, $key: accent);
+        }
+    }
+    @include button.capsule;
+    @media all and (min-width: map-get($map: $breakpoints, $key: nav)) {
+        .dtm .dtm__in &--larger {
+            padding-left: 4em;
+            padding-right: 4em;
+        }
+    }
+}
+
+.dtm .button {
+    &--capsule {
+        padding: 0.75em 1.5em;
+        border-radius: 2em;
+    }
+    &--alt {
+        background: map-get($colors, extra);
+    }
+}
+
+//}
+/*#endregion*/
+
+// ----------------------------------------------
+//      HERO
+// ----------------------------------------------
+/*#region*/
+
+//@include hero.microsite;   // basic microsite hero layout
+@include hero.text-image;
+.hero {
+    color: map-get($map: $colors, $key: primary);
+    padding-bottom: 5em;
+    font-size: 1.2rem;
+    &__text {
+        margin: 9vw 0 0 8vw;
+    }
+    &__text,
+    &__callout {
+        background: radial-gradient(
+            #fff 0%,
+            rgba(255, 255, 255, 0.0001) 70%,
+            rgba(255, 255, 255, 0.0001) 100%
+        );
+        &::after {
+            background: radial-gradient(
+                #fff 0%,
+                #fff 20%,
+                rgba(255, 255, 255, 0.0001) 75%,
+                rgba(255, 255, 255, 0.0001) 100%
+            );
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            min-height: 5em;
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: -1;
+        }
+    }
+    &__text::after {
+        left: -9em;
+    }
+    &__includes {
+        display: none;
+    }
+    &__callout {
+        z-index: 1;
+    }
+    &__title {
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 3.45em;
+        line-height: 1;
+        font-weight: 900;
+        > * {
+            font-size: 1em;
+            margin: 0.1em 0;
+        }
+        &-first-line {
+            font-size: 1.3em;
+        }
+        sup {
+            font-size: 0.4em;
+            font-size: clamp(12px, 0.4em, 30px);
+            bottom: 1em;
+        }
+    }
+    &__image {
+        position: relative;
+    }
+    &__callout {
+        position: absolute;
+        text-align: center;
+        font-size: 1em;
+        font-weight: 800;
+        line-height: 0.9;
+        font-size: 2vw;
+        font-size: clamp(2rem, 2vw, 36px);
+        strong {
+            font-weight: inherit;
+            font-size: 3em;
+        }
+        > * {
+            display: block;
+        }
+    }
+    &__callout &__tagline {
+        display: none;
+    }
+    &__tagline {
+        font-weight: 500;
+        font-size: 2.3em;
+        text-transform: uppercase;
+        margin: 0.25em 0;
+    }
+    &__offer {
+        color: inherit;
+    }
+    &__image {
+        background-color: #bcbbb9;
+    }
+    &__image-mobile {
+        display: none;
+    }
+    &__image-desktop {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+    }
+    &__group {
+        position: relative;
+        align-items: center;
+        overflow: visible;
+        justify-content: flex-start;
+        max-width: 100%;
+    }
+    &__disclaimer {
+        font-size: 1.3em;
+        font-size: clamp(12px, 1.3em, 22px);
+        font-weight: 500;
+    }
+    &__offer {
+        display: flex;
+        justify-self: flex-start;
+        align-items: center;
+        > * {
+            flex: 0 1 12em;
+        }
+    }
+    .button {
+        font-size: 2.9em;
+        flex: 0 1 auto;
+    }
+    @mixin forced-height {
+        min-height: 47vw;
+        min-height: clamp(390px, 47vw, 1500px);
+    }
+    @media all and (min-width: map-get($map: $breakpoints, $key: nav)) {
+        padding-bottom: 0;
+        @include forced-height();
+        &__group {
+            @include forced-height();
+        }
+        &__text {
+            align-items: flex-end;
+            margin: auto 0 7em 5em;
+        }
+        &__image {
+            z-index: 1;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            width: 100%;
+            @include contain.ratio(math.div(1920, 922));
+            min-height: 100%;
+        }
+        &__text {
+            position: relative;
+            z-index: 2;
+        }
+        &__callout {
+            right: 41.5vw;
+            top: 10.6vw;
+            text-transform: uppercase;
+            font-size: 4em;
+        }
+        &__disclaimer {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            margin: 0.5em 1em;
+        }
+    }
+
+    @media all and (max-width: 1300px) {
+        font-size: 1rem;
+    }
+    @media all and (max-width: 1100px) {
+        font-size: 0.7rem;
+        &__callout {
+            font-size: 2vw;
+        }
+    }
+
+    @media all and (max-width: map-get($map: $breakpoints, $key: nav)) {
+        &__group,
+        &__group > * {
+            margin: 0;
+        }
+        &__offer {
+            justify-content: center;
+        }
+        &__callout {
+            text-align: left;
+            left: 0;
+            padding: 0 3.5vw;
+            top: 14vw;
+            font-size: 6.4vw;
+            strong {
+                font-size: 2.5em;
+            }
+        }
+        &__title {
+            font-size: 7vw;
+            font-size: clamp(15px, 7vw, 25px);
+            margin: 0.5em 0;
+        }
+        &__title + &__tagline {
+            display: none;
+        }
+        &__callout &__tagline {
+            display: block;
+            font-size: 0.7em;
+            line-height: 1.15;
+        }
+        &__text {
+            margin: 0;
+            padding: 0 2em;
+        }
+        &__disclaimer {
+            position: absolute;
+            text-align: right;
+            bottom: 0;
+            width: 100%;
+            padding: 1em;
+        }
+        &__group {
+            flex-flow: column-reverse;
+            > * {
+                flex: 0 1 100%;
+                width: 100%;
+            }
+        }
+        &__includes {
+            display: block;
+            border-top: 1px solid #13216a;
+            order: -1;
+            font-size: 2.7em;
+            padding: 0.8em 0.5em;
+            margin: 1em 0 0;
+            h3 {
+                font-size: 1.5em;
+            }
+        }
+        picture,
+        img {
+            width: 100%;
+        }
+    }
+}
+
+// controlling the images
+@media all and (max-width: map-get($map: $breakpoints, $key: nav)) {
+    .dtm .dtm__in .hero {
+        &__image-desktop {
+            display: none;
+        }
+        &__image-mobile {
+            display: block;
+        }
+    }
+}
+/*#endregion*/
+
+/*#region*/
+// ----------------------------------------------
+//      MAIN OFFER + OFFER PRICE
+// ----------------------------------------------
+
+@include offer.new {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: center;
+    color: inherit;
+    //font-family: 'Gotham Bold', sans-serif;
+    font-weight: normal;
+    font-size: 1.75em;
+
+    > * {
+        margin: 0;
+        flex: 0 1 100%;
+    }
+
+    &__price {
+        letter-spacing: -0.05em;
+    }
+
+    &__shipping {
+        font-size: 1.2em;
+        font-size: clamp(12px, 1.2em, 34px);
+        letter-spacing: -0.025em;
+    }
+}
+/*#endregion*/
+
+/*#region*/
+
+// first section
+
+.bg--blue-circle {
+    background: radial-gradient(#027cb3 0%, #002566 70%);
+    color: white;
+}
+
+.bg--extra {
+    background: map-get($map: $colors, $key: extra);
+    color: white;
+}
+
+.comparison {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    font-weight: bold;
+    font-size: 4.8rem;
+    font-size: clamp(16px, 5vw, 4.8rem);
+    line-height: 1;
+    position: relative;
+    > * {
+        flex: 0 1 9em;
+    }
+    &__refills {
+        margin: 1.3em 0 0 0;
+    }
+    &__equals {
+        position: absolute;
+        color: map-get($map: $colors, $key: accent);
+        font-weight: 800;
+        font-size: 3.5em;
+        margin: 0 auto;
+        top: 0.4em;
+    }
+    picture {
+        margin: 0 auto;
+    }
+    &__bottles {
+        picture {
+            position: relative;
+            margin: 0 auto;
+        }
+    }
+    @media all and (max-width: map-get($breakpoints, mobile)) {
+        align-items: center;
+        picture {
+            max-width: 5em;
+        }
+        &__equals {
+            top: 1em;
+        }
+    }
+}
+
+.stars {
+    margin: 3em auto 1em;
+    display: block;
+}
+
+.quotes {
+}
+
+.quote {
+    font-weight: 500;
+    font-size: 3.5rem;
+    margin: 0 auto;
+    max-width: 650px;
+    &__mark {
+        font-family: map-get($fonts, main);
+        font-weight: normal;
+        font-size: 1.2em;
+        margin: 0 0.15em;
+    }
+    p {
+        line-height: 1;
+    }
+    footer {
+        text-transform: uppercase;
+        margin: 1em 0;
+        font-size: 0.5em;
+        font-weight: bold;
+        font-size: clamp(12px, 0.5em, 18px);
+        &::before {
+            content: "- ";
+        }
+    }
+    @media all and (max-width: map-get($breakpoints, mobile)) {
+        font-size: 2.3rem;
+    }
+}
+
+.title {
+    font-weight: 800;
+    font-size: 7.5rem;
+    margin: 0.5em 0;
+    text-transform: uppercase;
+    &--primary {
+        color: map-get($map: $colors, $key: primary);
+    }
+    &--accent {
+        color: map-get($map: $colors, $key: accent);
+    }
+    &--small {
+        font-size: 5rem;
+    }
+    &--oxiclean {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        picture {
+            max-width: 5em;
+        }
+    }
+    &--concentrated-power {
+        text-align: center;
+    }
+    + p {
+        margin: -1em 0 1.6em;
+    }
+    @media all and (min-width: map-get($map: $breakpoints, $key: mobile)) and (max-width: map-get($map: $breakpoints, $key: desktop)) {
+        font-size: 5vw;
+        font-size: clamp(3rem, 5vw, 6rem);
+    }
+    @media all and (max-width: map-get($map: $breakpoints, $key: mobile)) {
+        margin: 0.5em 0;
+        font-size: 8.8vw;
+    }
+}
+
+.banner--sticky {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 4;
+}
+
+.banner .title {
+    margin: 0;
+    padding: 0.25em 0;
+}
+
+.section {
+    &--center,
+    &--graphic {
+        text-align: center;
+        .section__block + .section__block {
+            margin-top: 12rem;
+        }
+    }
+    &__disclaimer {
+        text-transform: uppercase;
+        padding: 2em 0 0;
+    }
+    &__warning {
+        padding: 2em 0;
+    }
+    @media all and (max-width: map-get($map: $breakpoints, $key: mobile)) {
+        &__block {
+            margin: 1rem 0;
+        }
+    }
+}
+
+.section--no-top .section__in {
+    padding-top: 0px;
+    padding-bottom: 1rem;
+    @media all and (max-width: map-get($breakpoints, mobile)) {
+        padding-top: 2em;
+    }
+}
+
+.bg--blue {
+    background: #002667;
+    color: white;
+}
+
+.bg--fade-to-blue {
+    color: map-get($map: $colors, $key: primary);
+    background: linear-gradient(#fff 0%, #fff 70%, #b7e8fa 100%);
+}
+
+/*#endregion*/
+.group--graphics {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    font-size: 1.7rem;
+    font-family: map-get($map: $fonts, $key: main);
+    color: map-get($colors, primary);
+    font-weight: 500;
+    > * {
+        flex: 0 1 22.5em;
+        padding: 0.75em;
+    }
+    .graphic,
+    figure > picture {
+        margin: 0.33em auto;
+    }
+    figure > picture {
+        margin: 1em auto;
+    }
+    figcaption {
+        strong:first-of-type {
+            font-size: 1.5em;
+            font-weight: 800;
+            display: block;
+        }
+        small {
+            display: block;
+            font-size: 0.8em;
+            font-weight: 400;
+        }
+    }
+    img {
+        margin: 0 auto;
+    }
+    @media all and (max-width: map-get($map: $breakpoints, $key: mobile)) {
+        flex-wrap: wrap;
+        > figure {
+            margin: 0.5em;
+        }
+    }
+}
+
+.graphics--waste {
+    picture {
+        max-width: 162px;
+    }
+}
+
+.group--materials {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 1em 0;
+    > * {
+        flex: 0 1 100%;
+    }
+    @media all and (min-width: map-get($breakpoints, mobile)) {
+        > * {
+            flex: 0 1 50%;
+            padding: 0 1em;
+        }
+        picture {
+            flex: 0 1 350px;
+        }
+    }
+}
+
+.material-disclaimer--mobile {
+    display: none;
+    text-align: center;
+    margin: 1em 0 0.5em;
+    font-weight: bold;
+    width: 100%;
+}
+
+@media all and (max-width: map-get($breakpoints, mobile)) {
+    .material-disclaimer {
+        &--mobile {
+            display: block;
+        }
+        &--desktop {
+            display: none;
+        }
+    }
+}
+
+.checklist {
+    font-weight: 500;
+    text-align: left;
+    padding: 1em;
+    li {
+        position: relative;
+        list-style: none;
+        &::before {
+            content: "";
+            display: block;
+            background-image: url(/images/icons/checkmark.svg);
+            background-repeat: no-repeat;
+            width: 1em;
+            height: 1em;
+            position: absolute;
+            left: -1.3em;
+            top: 0.4em;
+            background-size: 100% auto;
+            background-position: center center;
+        }
+    }
+}
+
+.materials-list {
+    columns: 2;
+    font-size: 1.8rem;
+    li {
+        &::before {
+            background-image: url(/images/icons/check-icon.svg);
+        }
+    }
+    @media all and (max-width: map-get($breakpoints, mobile)) {
+        font-size: 1.4rem;
+    }
+}
+
+.group--accent {
+    font-size: 2.1rem;
+    figcaption {
+        font-weight: normal;
+        strong:first-of-type {
+            color: map-get($map: $colors, $key: accent);
+            font-size: 1.8em;
+            display: block;
+            text-transform: uppercase;
+            @media all and (max-width: map-get($map: $breakpoints, $key: mobile)) {
+                font-size: 1.5em;
+            }
+        }
+    }
+}
+
+@media all and (max-width: map-get($breakpoints, mobile)) {
+    .dtm .section--graphic {
+        .title--oxiclean {
+            display: none;
+        }
+        .title--img {
+            display: block;
+            margin: 7em auto 1em;
+            img {
+                margin: 0 auto;
+            }
+        }
+    }
+    .title--concentrated-power {
+        margin: 0 0 2em;
+    }
+}
+
+@media all and (max-width: map-get($map: $breakpoints, $key: mobile)) {
+    .icon--chevron {
+        height: 100%;
+    }
+
+    .group--mobile-inline {
+        flex-wrap: wrap;
+        > * {
+            flex: 0 1 100%;
+            display: flex;
+            align-items: center;
+        }
+        .graphic {
+            flex: 0 1 6em;
+            padding: 0.35em;
+        }
+        figcaption {
+            flex: 1 1 auto;
+            font-size: 0.66em;
+            padding-left: 1em;
+            text-align: left;
+        }
+    }
+}
+
+.graphic {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    picture {
+        width: 100%;
+    }
+}
+/*#region*/
+
+/*#endregion*/
+
+.footer {
+    text-align: center;
+    background: #fff;
+    color: map-get($map: $colors, $key: primary);
+
+    ul {
+        margin: 0;
+        padding: 0;
+
+        @include list.block;
+
+        a {
+            margin: 1em;
+        }
+
+        @media all and (min-width: map.get($breakpoints, mobile)) {
+            @include list.inline;
+        }
+    }
+
+    nav {
+        font-family: map-get($map: $fonts, $key: main);
+        a,
+        button {
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+        @media all and (max-width: map-get($map: $breakpoints, $key: mobile)) {
+            margin: 0.5em;
+            font-size: 1.3em;
+            a {
+                display: block;
+                text-align: left;
+                border-bottom: 4px dotted map-get($map: $colors, $key: primary);
+            }
+        }
+    }
+}
+
+.social {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2rem auto;
+    > * {
+        width: 5rem;
+        height: 5rem;
+        margin: 0.5em;
+        transition: transform 0.25s;
+        svg {
+            width: 100%;
+            height: 100%;
+        }
+        &:hover {
+            transform: translateY(0.25em);
+        }
+    }
+}
+
+.signup {
+    font-family: map-get($map: $fonts, $key: main);
+    background: map-get($map: $colors, $key: extra);
+    color: white;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 1em;
+    max-width: 130rem;
+    margin: 2em auto;
+    @media all and (min-width: map-get($map: $breakpoints, $key: nav)) {
+        max-width: 80%;
+    }
+    &__label {
+        font-size: 2em;
+    }
+    &__input {
+        margin: 0 1em 0 auto;
+        flex: 0 1 auto;
+        color: map-get($map: $colors, $key: primary);
+    }
+    input[type="text"] {
+        background: white;
+        padding: 1em;
+        border-radius: 0.5em;
+        color: black;
+        &::placeholder {
+            color: #666;
+        }
+    }
+    @media all and (max-width: map-get($map: $breakpoints, $key: mobile)) {
+        border-radius: 0px;
+        flex-wrap: wrap;
+        > * {
+            flex: 0 1 100%;
+            margin: 0.5em 0;
+            input[type="text"] {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.subscribe-msg {
+    display: none;
+    margin: 0 auto 3em;
+    font-size: 1.2em;
+    font-weight: bold;
+    background: #ccc;
+    max-width: 79rem;
+    padding: 0.5em;
+    border: 2px solid black;
+    &.error {
+        display: block;
+        background: rgb(233, 178, 178);
+        border-color: red;
+    }
+    &.success {
+        display: block;
+        background: rgb(180, 235, 180);
+        border-color: green;
+    }
+}
+
+@media all and (min-width: map-get($breakpoints, nav)) {
+    .order {
+        margin-top: 3em;
+    }
+}
+
+/*
+.order {
+
+    &__title {
+        padding: 3rem 0;
+    }
+
+    h2 {
+        text-align: center;
+        font: 32px/1.25 gotham-ultra, sans-serif;
+        text-transform: uppercase;
+        color: #ee0c0c;
+
+        > small {
+            display: block;
+            font-family: 'Gotham Book', $font-reset;
+            color: #555555;
+            font-size: 24px;
+            text-transform: capitalize;
+        }
+    }
+
+    &__highlight {
+        font-weight: normal;
+        color: map.get($colors, extra);
+        font-weight: bold;
+        font-family: futura-pt, sans-serif;
+    }
+
+    &__group {
+        @include group.contain {
+            align-items: flex-start;
+
+            > * {
+                padding: 1rem;
+            }
+        }
+    }
+
+    &__form {
+        flex: 1 1 400px;
+    }
+
+    &__offer-image {
+        flex: 1 1 500px;
+
+        display: flex;
+        justify-content: flex-end;
+
+        @include background.contain {
+            background: whitesmoke;
+        }
+    }
+
+    @media all and (max-width: map.get($breakpoints, desktop)) {
+        &__title,
+        &__offer-image {
+            display: none;
+        }
+    }
+}
+*/
+
+.option {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    font-weight: 600;
+    font-family: map-get($fonts, main);
+    color: map-get($colors, primary);
+    font-size: 1.6rem;
+    &__item {
+        flex: 0 1 25em;
+        margin: 1em 0;
+        @media all and (max-width: map-get($map: $breakpoints, $key: mobile)) {
+            padding: 1em;
+        }
+    }
+    &__title {
+        font-weight: 800;
+        font-size: 2em;
+        margin: -1.4em 0 0;
+        position: relative;
+        z-index: 2;
+    }
+    &__subtitle {
+        font-size: 1.25em;
+        font-weight: 800;
+        text-transform: uppercase;
+        margin: 0.25em 0;
+    }
+    &__list {
+        min-height: 10em;
+    }
+    &__selection {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin: 1em 0;
+        > * {
+            margin: 0 0.5em 0 0;
+        }
+    }
+    .button.is-selected {
+        background: #444;
+        &:hover,
+        &:focus {
+            background: black;
+        }
+    }
+}
+
+.list--checkmarks {
+    li {
+        position: relative;
+        list-style: none;
+        &::after {
+            content: "";
+            background: url(/images/icons/checkmark.svg) no-repeat;
+            width: 1em;
+            height: 1em;
+            background-size: contain;
+            display: block;
+            position: absolute;
+            left: -1.6em;
+            top: 0.5em;
+        }
+    }
+}
+
+/* Cascading Stylesheet | Campaign Version
+
+	@Layout
+
+ * --------------------------------------------------------------------- */
+/* Canvas | @Layout */
+/* set the minimum width of our canvas */
+// .dtm__in--dv .l-outer,
+// .dtm__in--dv .header,
+// .dtm__in--dv .l-footer {
+//     min-width: map.get($breakpoints, desktop);
+// }
+
+/* set the maximum width of our canvas */
+// .dtm__in--dv .header__in,
+// .dtm__in--dv .l-outer__in,
+// .dtm__in--dv .l-footer__in {
+//     max-width: map.get($breakpoints, desktop);
+// }
+
+/* set the padding of the canvas */
+.l-outer__in {
+    padding: 0.25em;
+}
+
+/* set the border width of our midline section */
+.dtm__in--dv .o-box--banner {
+    border-width: 3px 0;
+}
+
+/* set the desktop color of our white-space background */
+.dtm__in {
+    background: white;
+}
+
+/* set the color of our canvas background */
+.l-outer__in {
+    background: white;
+}
+
+// the circle graphic background
+@include bg.circle;
+@include bg.show-desktop;
+@include bg.show-mobile;
+@include background.image;
+@include background.name-color-map("footer", map.get($colors, accent), white);
+
+/* set the color of our form headline (defaults to #333) */
+.c-brand--form .c-brand--form__legend {
+    @include background.color-map(map.get($colors, formHeaders), white);
+}
+
+.c-brand--form legend {
+    width: calc(100% + 2px);
+    margin-left: -1px;
+}
+
+.c-brand--form__headline {
+    font-weight: bold;
+}
+
+/* set the color of our order review table (defaults to red) */
+.c-brand--table th,
+#form .c-brand--table__th {
+    background: map.get($colors, table);
+}
+
+@include dtm.new;
+
+@include dtm.form-no-offer-image;
+
+#upsellImage {
+    .upsell {
+        &__img {
+            &--wh,
+            &--pt,
+            &--iw {
+                display: none;
+            }
+        }
+    }
+}
+
+@include scope.for-mobile {
+    .c-brand__upsell-img {
+        display: none;
+    }
+}
+
+/* things that probably need to be modified */
+.dtm--index #content_top_custom .section__in.view__in {
+    padding: 3px;
+}
+
+.dtm--subpage .content__text nav {
+    margin-top: 4em;
+}
+
+.view__in.no-shadow {
+    box-shadow: none;
+}
+
+.snippet--od {
+    max-width: 70rem;
+}
+
+.svg-symbols {
+    display: none;
+}
+
+.dtm--subpage {
+    @media all and (min-width: map-get($map: $breakpoints, $key: nav)) {
+        .header__logo {
+            max-width: 16em;
+        }
+    }
+    main {
+        max-width: 1000px;
+        padding: 1em;
+        margin: 3em auto;
+    }
+    p {
+        margin: 1em 0;
+    }
+}
+
+.\@b {
+    @media all and (min-width: map-get($map: $breakpoints, $key: nav)) {
+        .header {
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .header__logo {
+            max-width: 11em;
+            position: relative;
+            margin: 0 auto;
+            top: 0;
+        }
+    }
+}
+
+.dtm--confirmation #content_top {
+    max-width: 900px;
+}
+
+// removing extra padding from the bottom of the checkout page
+.dtm--subpage .order .view__in {
+    padding: 0;
+}
+
+.dtm--subpage h2 {
+    margin: 1em 0;
+    font-size: 2.2em;
+}
+
+// fixing the alignment of the credit card icons
+#divCARD {
+    padding: 1.05em 0 1.65em;
+}
+
+// centering the checkout buttons
+.order__form form #calltoAction {
+    margin: 0 auto;
+}
+
+// centering offer details
+.offer-details {
+    max-width: 95%;
+    margin: 0 auto;
+}
+
+.dtm .dtm__in .terms-checkbox {
+    margin: 1rem auto;
+}
+
+.form-submit-wrapper {
+    flex: 0 1 100%;
+    > * {
+        max-width: 60rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+@media all and (max-width: map-get($breakpoints, mobile)) {
+    .form-submit-wrapper {
+        max-width: 95%;
+    }
+}
+
+// IE hacks
+
+@media all and (-ms-high-contrast: none) and (min-width: 750px) {
+    *::-ms-backdrop,
+    .hero__text {
+        margin-top: 26vw;
+    }
+    *::-ms-backdrop,
+    .bg--image .contain--bkg-circle-desktop {
+        min-width: 1860px;
+        left: calc((100% - 1860px) / 2);
+    }
+}

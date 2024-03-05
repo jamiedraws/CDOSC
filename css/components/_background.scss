@@ -1,0 +1,133 @@
+@use "../1.0000/themes/colors";
+
+$select: ".bg" !default;
+$color-one: black !default;
+$desktop: black !default;
+$mobile: black !default;
+
+@mixin contain {
+    picture,
+    [data-src-iframe] {
+        @content;
+    }
+}
+
+@mixin new {
+    #{$select} {
+        &--color {
+            background-color: colors.$color-one;
+            color: white;
+        }
+
+        @content;
+    }
+}
+
+@mixin light {
+    #{$select} {
+        &--light {
+            background: #ede2d7;
+
+            picture {
+                background: whitesmoke;
+            }
+        }
+
+        @content;
+    }
+}
+
+@mixin dark {
+    #{$select} {
+        &--dark {
+            background: #13216a;
+            color: white;
+
+            @include contain {
+                background: gray;
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin contrast {
+    #{$select} {
+        &--contrast {
+            background: #11a393;
+            color: white;
+
+            ::selection {
+                background: black;
+                color: white;
+            }
+
+            a:focus,
+            button:focus,
+            [tabindex="0"]:focus {
+                outline-color: white;
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin image {
+    #{$select} {
+        &--image {
+            position: relative;
+
+            #{$select} {
+                &__image {
+                    position: absolute;
+                    top: 0;
+                    bottom: 0;
+                    left: 0;
+                    right: 0;
+                    margin: auto;
+                    z-index: -1;
+
+                    img {
+                        object-fit: cover;
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin circle {
+    #{$select}--circle {
+        
+        background: linear-gradient(to bottom, #002566, #fff);
+        padding-bottom: 12em;
+    
+        @content;
+    }
+}
+
+@mixin show-desktop {
+    #{$select}__show-desktop {
+        display: none;
+        @media all and (min-width: $desktop) {
+            display: block;
+        }
+        @content;
+    }
+}
+
+@mixin show-mobile {
+    #{$select}__show-mobile {
+        display: none;
+        @media all and (max-width: $desktop) {
+            display: block;
+        }
+        @content;
+    }
+}

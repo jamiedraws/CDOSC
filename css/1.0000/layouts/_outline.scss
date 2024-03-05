@@ -1,0 +1,33 @@
+$select: ".outline" !default;
+
+@mixin new {
+    #{$select} {
+        ol {
+            list-style: decimal;
+            li {
+                strong:first-of-type {
+                    display: block;
+                    margin: 0 0 0.33em;
+                }
+                ol {
+                    list-style: lower-alpha;
+                    li {
+                        ol {
+                            list-style: upper-alpha;
+                        }
+                        strong:first-of-type {
+                            text-decoration: underline;
+                            font-weight: 500;
+                        }
+                    }
+                }
+            }
+        }
+
+        ul {
+            list-style: disc;
+        }
+
+        @content;
+    }
+}

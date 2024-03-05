@@ -1,0 +1,330 @@
+@use "../../../Shared/css/template/dtm/utils/scope";
+
+@use "../templates/fancybox";
+
+@use "../themes/colors";
+@use "../themes/fonts";
+@use "../layouts/queries";
+
+@use "../layouts/document";
+
+$select: ".dtm" !default;
+$breakpoint-small: 240px !default;
+$breakpoint-mobile: 640px !default;
+$breakpoint-desktop: 1000px !default;
+
+@mixin new {
+    @include scope.for-template {
+        @include fancybox.new;
+        @include box;
+        @include document.set-document-font();
+    }
+
+    @include scope.for-template(".dtm__in", ".dtm") {
+        @include summary-review(colors.$table-header-background, currentColor);
+    }
+
+    #{$select} {
+        &__in {
+            background: none;
+        }
+    }
+
+    @content;
+}
+
+@mixin layout {
+    @include scope.for-template {
+        .l-outer {
+            max-width: $breakpoint-desktop;
+            margin: auto;
+
+            &__in {
+                max-width: $breakpoint-desktop;
+                margin: auto;
+                box-shadow: none;
+                border: none;
+            }
+        }
+    }
+
+    .l-disclaimer {
+        max-width: 900px;
+        margin: auto;
+    }
+
+    @content;
+}
+
+@mixin confirmation-table {
+    .c-brand {
+        .c-list {
+            &--horz {
+                display: flex;
+                flex-wrap: wrap;
+            }
+
+            &__item {
+                flex: 1 1 200px;
+                display: block;
+            }
+        }
+    }
+}
+
+@mixin box {
+    .c-brand {
+        &--box {
+            background: colors.$first;
+        }
+    }
+}
+
+@mixin summary-review($background-color: #4b4c4e, $font-color: white) {
+    .c-brand {
+        &--table {
+            th,
+            & .c-brand--table__th {
+                background: $background-color;
+                border-color: $background-color;
+                color: $font-color;
+            }
+        }
+    }
+}
+
+@mixin ofrt {
+    @content;
+}
+
+@mixin review-table {
+    .reviewTable {
+        &__wrap {
+            padding: 1rem;
+            @media all and (max-width: $breakpoint-small) {
+                overflow: scroll;
+            }
+        }
+
+        @content;
+    }
+    .FormHeadlineL {
+        background: #6d2234;
+        font: bold 1.6em/1 gotham, sans-serif;
+        text-transform: uppercase;
+    }
+}
+
+@mixin form {
+    .c-brand--form {
+        contain: layout;
+
+        &,
+        [class*="c-brand"] {
+            font-size: 1.6rem;
+        }
+
+        &__group {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -1rem;
+
+            > * {
+                margin: 1rem;
+                flex: 1 1 400px;
+            }
+        }
+
+        &__fieldset {
+            &:not(:last-child) {
+                margin-bottom: 1.5rem;
+            }
+        }
+
+        &__legend {
+            background: colors.$first;
+            color: colors.$light;
+            padding: 1rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        & &__legend > &__headline,
+        & &__fieldset > &__headline {
+            font: bold 1.3em/1 fonts.$third, sans-serif;
+            text-align: left;
+            text-transform: uppercase;
+        }
+
+        &__desc {
+            text-align: left;
+            font-style: italic;
+            margin-top: 1rem;
+        }
+
+        &__list {
+            padding: 1rem;
+        }
+
+        &__item {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+
+            &:not(:last-child) {
+                margin-bottom: 1rem;
+            }
+
+            > * {
+                flex: 1 1 100%;
+            }
+        }
+
+        &__label {
+            margin-bottom: 0.5rem;
+        }
+
+        &__item-group {
+            $gap: 0.5rem;
+
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            margin: 0;
+
+            > * {
+                margin: #{$gap};
+                flex: 1;
+            }
+        }
+
+        @content;
+    }
+}
+
+@mixin remove-form-border {
+    .c-brand--form {
+        contain: layout;
+        width: 100%;
+    }
+}
+
+@mixin processing-order-popup {
+    #facebox * {
+        text-transform: capitalize;
+    }
+}
+
+@mixin express-checkout {
+    .c-brand--form {
+        .checkout-option {
+            text-align: left;
+            padding: 0 0 1rem;
+            overflow: visible;
+
+            .label {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: center;
+                min-width: 0;
+            }
+
+            &__img {
+                margin: 0;
+            }
+        }
+
+        @content;
+    }
+}
+
+@mixin eflex-checkmark {
+    .eflex-checkmark {
+        &__svg {
+            margin: 0;
+        }
+
+        @content;
+    }
+}
+
+@mixin fixes {
+    .dtm__in {
+        background: white;
+    }
+    #content_bottom {
+        box-shadow: none;
+        border: none;
+        width: 100%;
+    }
+
+    .c-brand--form * {
+        font-weight: 500;
+        font-family: "gotham";
+    }
+
+    .dtm #form {
+        border: none;
+    }
+
+    #form * {
+        font-family: "gotham";
+    }
+
+    .zc {
+        min-width: 10em;
+    }
+
+    .c-brand--form__fieldset {
+        //margin: 1em 0;
+    }
+
+    .c-brand--form__headline {
+        font-weight: bold;
+    }
+
+    @media (min-width: 1100px) {
+        #content_bottom {
+            width: 1100px;
+        }
+    }
+
+    @media (max-width: 800px) {
+        .c-brand--form form > .row .col {
+            display: block;
+            width: 100%;
+            padding: 0;
+        }
+    }
+
+    // fix the default scrolling behavior on order now click
+    @media (max-width: 600px) {
+        .dtm #form {
+            // 			margin-top: 12rem;
+        }
+    }
+
+    @media (max-width: queries.$md) {
+        .dtm .dtm__in .c-brand--form__headline {
+            font-size: 1.4rem;
+        }
+    }
+
+    [class*="c-brand--table"] th,
+    .table th,
+    .c-brand--table__th,
+    .dtm .c-brand--table--cart--oswe th,
+    .orderItemsTable th {
+        background: #cacac8;
+        color: black;
+    }
+
+    @media (max-width: 47.5em),
+        (max-device-width: 64em) and (min-device-width: 48em) {
+        .dtm__in .c-brand--table tbody td:first-of-type,
+        .dtm__in--mv .c-brand--table--cart--oswe .c-brand--table__th {
+            background: #cacac8;
+            color: black;
+        }
+    }
+}

@@ -1,0 +1,220 @@
+$select: ".group" !default;
+
+@use "../layouts/queries";
+
+@mixin gutter($gutter-contract: 0.5rem, $gutter-expand: $gutter-contract) {
+    margin: -#{$gutter-contract};
+
+    > * {
+        margin: #{$gutter-expand};
+    }
+}
+
+@mixin contain($gutter: 0.5rem) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    overflow: hidden;
+
+    > * {
+        flex: 0 1 auto;
+    }
+
+    @include gutter($gutter);
+}
+
+@mixin new($select: $select, $gutter: 0.5rem) {
+    #{$select} {
+        @include contain($gutter);
+
+        @content;
+    }
+}
+
+@mixin two-column {
+    #{$select} {
+        &--2x-column {
+            align-items: flex-start;
+            @include gutter(2rem);
+
+            > * {
+                flex: 1 1 400px;
+                padding: 3px;
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin options {
+    #{$select} {
+        &--options {
+            @include gutter(0.25rem);
+
+            @content;
+        }
+    }
+}
+
+@mixin hero {
+    #{$select} {
+        &--hero {
+            align-items: center;
+
+            @media all and (min-width: 1000px) {
+                @include gutter(1rem);
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin space-between {
+    #{$select} {
+        &--space-between {
+            justify-content: space-between;
+
+            @content;
+        }
+    }
+}
+
+@mixin row {
+    #{$select} {
+        &__row {
+            flex: 1 1 100%;
+        }
+
+        @content;
+    }
+}
+
+@mixin uses {
+    #{$select} {
+        &--uses {
+            justify-content: space-around;
+            text-align: center;
+            font-size: 1.25em;
+            font-weight: 500;
+
+            picture {
+                margin: auto;
+                border-radius: 1em;
+                overflow: hidden;
+                background: whitesmoke;
+            }
+
+            figcaption {
+                margin: 1em 0;
+            }
+
+            strong {
+                font-weight: 800;
+                text-transform: uppercase;
+            }
+
+            @media all and (max-width: queries.$xl) {
+                text-align: left;
+                font-size: 1.4rem;
+
+                picture {
+                    flex: 0 1 256px;
+                }
+
+                figcaption {
+                    flex: 1 1 180px;
+                }
+            }
+
+            #{$select} {
+                &__item {
+                    flex: 0 1 30rem;
+
+                    @media all and (max-width: queries.$xl) {
+                        $gap: 1em;
+
+                        display: flex;
+                        flex-wrap: wrap;
+                        flex: 1 1 100%;
+                        align-items: center;
+                        justify-content: space-around;
+                        margin: 0;
+
+                        > * {
+                            margin: #{$gap};
+                        }
+                    }
+                }
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin exclusive {
+    #{$select} {
+        &--exclusive {
+            font-weight: 500;
+            padding: 3rem 0;
+
+            > * {
+                flex: 1;
+                margin: 1em;
+
+                @media all and (min-width: queries.$lg) {
+                    &:first-child {
+                        border-right: 3px solid #cacaca;
+                    }
+                }
+            }
+
+            @media all and (max-width: queries.$lg) {
+                flex-wrap: wrap;
+
+                > * {
+                    flex: 0 1 100%;
+                }
+            }
+
+            #{$select} {
+            }
+            @content;
+        }
+    }
+}
+
+@mixin steps {
+    #{$select} {
+        &--steps {
+            @media all and (max-width: queries.$xl) {
+                align-items: flex-start;
+
+                figcaption {
+                    margin: 0.5em auto 1em;
+                }
+
+                picture {
+                    margin: 0.25em auto;
+
+                    @media all and (max-width: 600px) {
+                        margin: 0.25em;
+                    }
+                }
+            }
+
+            #{$select} {
+                &__item {
+                    flex: 0 1 28rem;
+                    text-align: center;
+                }
+            }
+
+            @content;
+        }
+    }
+}

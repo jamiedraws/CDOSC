@@ -1,0 +1,132 @@
+$select: ".header" !default;
+$breakpoint: 1000px !default;
+
+@use "../themes/colors";
+@use "../layouts/nav" with (
+    $background-color: white,
+    $font-color: colors.$dark
+);
+
+@mixin new {
+    #{$select} {
+        z-index: 2;
+
+        &__in {
+            padding: 0;
+        }
+
+        &__group {
+            display: flex;
+            flex-wrap: nowrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &__center {
+            justify-content: center;
+        }
+
+        &__title {
+            order: 1;
+            flex: 0 1 14em;
+            color: inherit;
+            text-transform: none;
+            font-weight: 800;
+            font-size: 3em;
+
+            &--inline {
+                order: 0;
+                flex: 1 1 15em;
+                max-width: 15em;
+                margin: 0 auto;
+            }
+
+            small {
+                font-size: 0.75em;
+                display: block;
+                margin: 0.5em 0 0;
+            }
+
+            strong {
+                font-weight: 800;
+            }
+        }
+
+        &-subtitle {
+            flex: 0 1 100%;
+        }
+
+        &__logo {
+            flex: 0 1 205px;
+        }
+
+        @media all and (min-width: $breakpoint) {
+            &-subtitle+nav {
+                display: none;
+            }
+        }
+
+        @media all and (max-width: $breakpoint) {
+            display: none;
+            &-subtitle {
+                display: none;
+            }
+        }
+
+        @content;
+    }
+}
+
+@mixin nav {
+    @include nav.new;
+    @include nav.bar;
+
+    @include nav.drawer;
+    @include nav.nav-within-header;
+}
+
+@mixin nav-within {
+    #{$select} {
+        @media all and (max-width: $breakpoint) {
+            display: block;
+//             z-index: 3;
+            display: flex;
+            flex-wrap: wrap;
+//             position: sticky;
+//             top: 0;
+
+            > * {
+                flex: 1 1 100%;
+            }
+
+            * {
+                overflow: visible;
+            }
+
+            &__in {
+                padding: 0em;
+                order: -1;
+            }
+
+            &__title {
+                font-size: 2em;
+            }
+
+        }
+
+        @media all and (max-width: 600px) {
+            &__logo {
+                flex: 0 1 4em;
+            }
+            &__title {
+                font-size: 1.3em;
+            }
+        }
+
+        @content;
+    }
+}
+
+@mixin remove-navbar {
+    @include nav.remove-bar;
+}

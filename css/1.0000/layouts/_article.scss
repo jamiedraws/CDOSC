@@ -1,0 +1,20 @@
+$select: ".article" !default;
+
+@use "../components/list";
+
+@mixin new {
+    #{$select} {
+        margin-top: 4rem;
+        margin-bottom: 4rem;
+
+        * + * {
+            margin-top: 2rem;
+        }
+
+        ul {
+            @include list.bullet;
+        }
+
+        @content;
+    }
+}

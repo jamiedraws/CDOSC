@@ -1,0 +1,61 @@
+$select: ".callout" !default;
+
+@use "../layouts/queries";
+
+@mixin new {
+    #{$select} {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-around;
+        font-size: 1.25em;
+        margin: 0;
+
+        > * {
+            margin: 1rem;
+        }
+
+        p {
+            flex: 1 1 160px;
+        }
+
+        strong {
+            font-weight: 800;
+            color: #11a393;
+        }
+
+        &__icon {
+            background: #12a493;
+            border-radius: 100%;
+            padding: 0.5em;
+            width: 4.6em;
+            height: 4.6em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &--thumbs-up &__icon {
+            padding: 1em;
+        }
+
+        &--thumbs-up {
+            strong {
+                display: block;
+            }
+        }
+
+        @media (max-width: queries.$md) {
+            font-size: 1.5rem;
+
+            &__icon {
+                picture {
+                    margin: 0;
+                    flex: 0 1 100%;
+                }
+            }
+        }
+
+        @content;
+    }
+}

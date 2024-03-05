@@ -1,0 +1,12 @@
+$select: ".link" !default;
+
+@mixin new {
+    #{$select} {
+        text-decoration: underline;
+        background: none;
+        border: 0;
+        appearance: none;
+
+        @content;
+    }
+}

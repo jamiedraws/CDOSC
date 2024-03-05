@@ -1,0 +1,72 @@
+$select: ".view" !default;
+$breakpoint: 1000px !default;
+
+@mixin new {
+    @include set-anchor-position();
+
+    #{$select} {
+        position: relative;
+        z-index: 1;
+
+        &__anchor {
+            @supports (position: sticky) {
+                position: absolute;
+            }
+        }
+
+        &__scroll {
+            position: sticky;
+        }
+
+        @content;
+    }
+}
+
+@mixin set-anchor-position($static-amount: -3.6rem, $dynamic-amount: -5.1rem) {
+    #{$select} {
+        &__anchor {
+            top: $static-amount;
+
+            @media all and (max-width: $breakpoint) {
+                top: $dynamic-amount;
+            }
+        }
+
+        &__scroll {
+            top: calc(-1 * #{$static-amount});
+
+            @media all and (max-width: $breakpoint) {
+                top: calc(-1 * #{$dynamic-amount});
+            }
+        }
+    }
+}
+
+@mixin zero-anchor-position($parent-select: $select) {
+    #{$parent-select} {
+        & > #{$select}__anchor {
+            top: 0;
+        }
+
+        @content;
+    }
+}
+
+@mixin set-position-context($parent-select: $select, $amount: 0rem) {
+    #{$parent-select} {
+        margin-top: -#{$amount};
+
+        #{$select} {
+            &__offset {
+                padding-top: $amount;
+            }
+
+            &__flow {
+                padding-top: $amount;
+                margin-bottom: -#{$amount};
+            }
+        }
+
+        @content;
+    }
+}

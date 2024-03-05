@@ -1,0 +1,35 @@
+$select: ".link" !default;
+
+@mixin new {
+    #{$select} {
+        position: relative;
+
+        &__advisal {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            pointer-events: none;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            text-align: left;
+            transform: translateY(-100%);
+            min-width: 30vw;
+        }
+
+        &:hover > &__advisal,
+        &:focus > &__advisal {
+            opacity: 1;
+            transform: translateY(-120%);
+        }
+
+        &__container {
+            display: inline-block;
+            padding: 0.5em 0.75em;
+            background: black;
+            color: white;
+            border-radius: 0.5em;
+        }
+
+        @content;
+    }
+}

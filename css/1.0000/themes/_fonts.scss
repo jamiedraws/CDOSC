@@ -1,0 +1,47 @@
+$gotham: gotham;
+
+$first: $gotham;
+$second: proxima-nova;
+$third: $gotham;
+$fourth: $gotham;
+
+@if ($first == $gotham) {
+    @font-face {
+        font-family: gotham;
+        font-weight: normal;
+        font-display: fallback;
+        src: url(/shared/webfonts/gotham/book/Gotham-Book.woff2) format("woff2"),
+            url(/shared/webfonts/gotham/book/Gotham-Book.woff) format("woff");
+    }
+    @font-face {
+        font-family: gotham;
+        font-weight: 500;
+        font-display: fallback;
+        src: url(/shared/webfonts/gotham/medium/Gotham-Medium.woff2)
+                format("woff2"),
+            url(/shared/webfonts/gotham/medium/Gotham-Medium.woff)
+                format("woff");
+    }
+    @font-face {
+        font-family: gotham;
+        font-weight: 700;
+        font-display: fallback;
+        src: url(/shared/webfonts/gotham/bold/Gotham-Bold.woff2) format("woff2"),
+            url(/shared/webfonts/gotham/bold/Gotham-Bold.woff) format("woff");
+    }
+    @font-face {
+        font-family: gotham;
+        font-weight: 800;
+        font-display: fallback;
+        src: url(/shared/webfonts/gotham/black/Gotham-Black.woff2)
+                format("woff2"),
+            url(/shared/webfonts/gotham/black/Gotham-Black.woff) format("woff");
+    }
+}
+
+// @font-face {
+//     font-family: 'Icomoon';
+//     font-display: swap;
+//         src: url(/shared/webfonts/icomoon/icomoon.woff2?cb=2) format('woff2'),
+//             url(/shared/webfonts/icomoon/icomoon.woff?cb=2) format('woff');
+//  }

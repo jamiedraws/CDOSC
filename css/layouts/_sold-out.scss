@@ -1,0 +1,71 @@
+$select: ".sold-out" !default;
+
+@mixin base {
+    #{$select} {
+        
+        font-size: 1.8rem;
+        color: black;
+        padding: 1em;
+        text-align: left;
+        max-width: 640px;
+    
+        img {
+            display: block;
+            margin: 0;
+        }
+        
+        h1, strong {
+            color: #39b8fb;
+        }
+        
+        p {
+            margin: 1em 0;
+        }
+        
+        hr {
+            background: #39b8fb;
+            height: 2px;
+        }
+        
+        h1 {
+            font-size: 2.5em;
+            margin: 0.5em 0 0;
+        }
+
+        &__group {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: nowrap;
+        }
+        
+        input[type="email"],
+        input[type="text"] {
+            border-radius: 0px;
+            border: 2px solid #39b8fb;
+            font-size: 1em;
+            flex: 1 1 60%;
+            margin:  0 0.5em 0 0;
+        }
+        
+        input[type="submit"] {
+            border: none;
+            padding: 1em;
+            background: #122365;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            transition: background 0.25s;
+            &:hover,
+            &:focus {
+                background: black;
+            }
+        }
+
+        @media all and (max-width: 640px) {
+            padding: 0;
+            font-size: 1.4rem;
+        }
+
+        @content;
+    }
+}

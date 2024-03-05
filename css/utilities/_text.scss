@@ -1,0 +1,14 @@
+$select: ".text" !default;
+$breakpoint: 640px !default;
+
+@mixin wrap {
+    #{$select}-wrap {
+        @media all and (min-width: $breakpoint) {
+            > * {
+                display: block;
+            }
+        }
+    
+        @content;
+    }
+}

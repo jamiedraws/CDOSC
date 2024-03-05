@@ -1,0 +1,147 @@
+@font-face {
+  font-family: gotham;
+  font-weight: normal;
+  font-display: fallback;
+  src: url(/shared/webfonts/gotham/book/Gotham-Book.woff2) format("woff2"), url(/shared/webfonts/gotham/book/Gotham-Book.woff) format("woff");
+}
+@font-face {
+  font-family: gotham;
+  font-weight: 500;
+  font-display: fallback;
+  src: url(/shared/webfonts/gotham/medium/Gotham-Medium.woff2) format("woff2"), url(/shared/webfonts/gotham/medium/Gotham-Medium.woff) format("woff");
+}
+@font-face {
+  font-family: gotham;
+  font-weight: 700;
+  font-display: fallback;
+  src: url(/shared/webfonts/gotham/bold/Gotham-Bold.woff2) format("woff2"), url(/shared/webfonts/gotham/bold/Gotham-Bold.woff) format("woff");
+}
+@font-face {
+  font-family: gotham;
+  font-weight: 800;
+  font-display: fallback;
+  src: url(/shared/webfonts/gotham/black/Gotham-Black.woff2) format("woff2"), url(/shared/webfonts/gotham/black/Gotham-Black.woff) format("woff");
+}
+@keyframes fingerPress {
+  0%, 100% {
+    transform: scale(0.75);
+  }
+  50% {
+    transform: scale(0.6);
+  }
+}
+.copy > * + * {
+  margin-top: 1rem;
+}
+
+.footer__logo {
+  margin: auto;
+  max-width: 200px;
+}
+.footer .list {
+  margin: 1.5rem auto;
+  list-style: none;
+  text-align: center;
+}
+.footer .list > li a,
+.footer .list > li button {
+  padding: 0.25em;
+  display: block;
+  color: inherit;
+  font: inherit;
+}
+.footer .list > li ::before {
+  display: none;
+}
+@media all and (min-width: 992px) {
+  .footer .list > li {
+    display: inline-block;
+    margin: 0.5em 0;
+    border-right: 1px solid;
+  }
+  .footer .list > li a,
+.footer .list > li button {
+    padding: 0em 0.5em;
+    text-decoration: underline;
+  }
+}
+@media all and (max-width: 992px) {
+  .footer .list {
+    text-align: left;
+    column-width: 20em;
+    column-rule: 1px solid;
+  }
+}
+.footer .list > li:last-child {
+  border: none;
+}
+.footer__copyright {
+  text-align: center;
+}
+
+.bg--dark {
+  background: #13216a;
+  color: white;
+}
+.bg--dark picture,
+.bg--dark [data-src-iframe] {
+  background: gray;
+}
+
+.list--grid {
+  column-width: 20em;
+  column-rule: 1px solid;
+  list-style: none;
+  margin: 0 -2em;
+  overflow: hidden;
+}
+.list--grid > li {
+  break-inside: avoid;
+  margin: 0 2em;
+}
+
+@media all and (min-width: 1000px) {
+  .nav {
+    display: none;
+  }
+}
+.dtm__in {
+  font: 16px/1.35 gotham, sans-serif;
+}
+.dtm__in .fancybox-stage [class*=button] {
+  border: 0;
+}
+.dtm__in .fancybox-content {
+  max-width: 900px;
+}
+.dtm__in .c-brand--box {
+  background: #6d2234;
+}
+
+.dtm .dtm__in .c-brand--table th, .dtm .dtm__in .c-brand--table .c-brand--table__th {
+  background: #cacac8;
+  border-color: #cacac8;
+  color: currentColor;
+}
+
+.dtm__in {
+  background: none;
+}
+
+.dtm__in .l-outer {
+  max-width: 1000px;
+  margin: auto;
+}
+.dtm__in .l-outer__in {
+  max-width: 1000px;
+  margin: auto;
+  box-shadow: none;
+  border: none;
+}
+
+.l-disclaimer {
+  max-width: 900px;
+  margin: auto;
+}
+
+/*# sourceMappingURL=upsell.css.map */

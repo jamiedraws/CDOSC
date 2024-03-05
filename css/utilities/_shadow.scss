@@ -1,0 +1,26 @@
+
+@mixin floor {
+    position: relative;
+    &::before,
+    &::after {
+        content: '';
+        z-index: -1;
+        position: absolute;
+        left: 10%;
+        bottom: 1em;
+        top: 80%;
+        width: 50%;
+        background: rgba(0,0,0,0.5);
+        box-shadow: 0 15px 10px rgba(0,0,0,0.5);
+    }
+    &::before {
+        -webkit-transform: rotate(-3deg); -moz-transform: rotate(-3deg); -o-transform: rotate(-3deg);
+        -ms-transform: rotate(-3deg); transform: rotate(-3deg);
+    }
+    &::after {
+        -webkit-transform: rotate(3deg); -moz-transform: rotate(3deg); -o-transform: rotate(3deg);
+        -ms-transform: rotate(3deg); transform: rotate(3deg); right: 10%; left: auto;
+    }
+
+    @content;
+}

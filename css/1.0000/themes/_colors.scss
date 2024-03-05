@@ -1,0 +1,23 @@
+$dark: #0d0d0d;
+$light: white;
+
+$first: #6d2234;
+$second: #333333;
+$third: #ff6600;
+
+$color-one: #11a393;
+$color-two: #13216a;
+$color-three: #f3eda0;
+
+$table-header-background: #cacac8;
+$table-body-background: #f9f9f9;
+
+@mixin accent {
+    .accent-one {
+        color: #6c2134;
+    }
+
+    .accent-two {
+        color: #11a393;
+    }
+}

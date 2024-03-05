@@ -1,0 +1,35 @@
+$select: ".option" !default;
+$desktop-breakpoint: 980px !default;
+$mobile-breakpoint: 640px !default;
+$font-size: 1.5rem !default;
+
+@mixin side-by-side {
+    #{$select} {
+        font-size: $font-size;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
+
+        &__item {
+            flex: 0 1 24em;
+            text-align: center;
+            margin: 0.5em;
+        }
+
+        &__title {
+            background: black;
+            color: white;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &__img {
+            margin: 0 auto;
+        }
+
+        @content;
+    }
+}
+

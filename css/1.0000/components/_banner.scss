@@ -1,0 +1,42 @@
+@use "../layouts/queries";
+
+$select: ".banner" !default;
+$font-color: white !default;
+$background-color: black !default;
+
+@mixin new() {
+    #{$select} {
+        display: block;
+        text-decoration: none;
+
+        color: $font-color;
+        background-color: $background-color;
+        text-align: center;
+        padding: 0.25em;
+        margin: 0;
+        font-weight: 800;
+        font-size: 1.25em;
+
+        @media all and (min-width: queries.$md) {
+            > * {
+                margin: 0 1rem;
+            }
+        }
+
+        @media (max-width: queries.$md) {
+            font-size: 1em;
+
+            > * {
+                display: block;
+            }
+        }
+
+        &--free-shipping {
+            position: sticky;
+            top: 0;
+            z-index: 3;
+        }
+
+        @content;
+    }
+}

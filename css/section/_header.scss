@@ -1,0 +1,83 @@
+$select: ".header" !default;
+$bottom-shadow: 0 0 30px rgba(0, 0, 0, 0.5) !default;
+$edge-shadow: $bottom-shadow !default;
+$desktop-breakpoint: 980px !default;
+$mobile-breakpoint: 640px !default;
+$logo-size: 100px !default;
+
+@use "../../Shared/css/template/dtm/layouts/group";
+
+@mixin new {
+    #{$select} {
+        position: relative;
+        z-index: 2;
+
+        &__title {
+            text-align: center;
+        }
+
+        @content;
+    }
+}
+
+@mixin bottom-shadow {
+    #{$select} {
+        box-shadow: $bottom-shadow;
+
+        @content;
+    }
+}
+
+@mixin edge-shadow {
+    #{$select} {
+        &__in {
+            box-shadow: $edge-shadow;
+
+            @content;
+        }
+    }
+}
+
+@mixin group {
+    #{$select} {
+        &__group {
+            @include group.gutter;
+            display: flex;
+            align-items: center;
+        
+            @media all and (max-width: $mobile-breakpoint) {
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+        }
+
+        @content;
+    }
+}
+
+@mixin overflow-logo {
+    #{$select} {
+
+        &__logo {
+            position: absolute;
+            top: 60px;
+        }
+
+        @media all and (min-width: $desktop-breakpoint) {
+            &__title {
+                margin-left: $logo-size;
+            }
+        }
+
+        @media all and (max-width: $desktop-breakpoint) {
+            &__logo {
+                left: 0;
+            }
+            &__title {
+                text-align: right;
+            }
+        }
+
+        @content;
+    }
+}

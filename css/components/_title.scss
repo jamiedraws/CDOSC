@@ -1,0 +1,16 @@
+$select: ".title" !default;
+
+@mixin oxiclean {
+    #{$select}--oxiclean {
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        #{$select} {
+            
+        }
+
+        @content;
+    }
+}

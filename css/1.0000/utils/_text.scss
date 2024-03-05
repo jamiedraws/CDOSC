@@ -1,0 +1,11 @@
+$select: ".text" !default;
+
+@mixin new {
+	#{$select} {
+		&-center {
+			text-align: center;
+		}
+
+		@content;
+	}
+}

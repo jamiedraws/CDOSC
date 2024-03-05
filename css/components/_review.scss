@@ -1,0 +1,54 @@
+$select: ".review" !default;
+
+// abstracts
+@use "../../Shared/css/template/base/abstracts/stars";
+@use "../../Shared/css/template/base/abstracts/copy";
+
+%set-title {
+    font-style: italic;
+    font-size: 1.25em;
+}
+
+@mixin base {
+    @include stars.base;
+
+    #{$select} {
+        text-align: center;
+
+        &__stars {
+            font-size: 1.5em;
+            color: #fff004;
+        }
+
+        &__headline {
+            @extend %set-title;
+        }
+
+        &__copy {
+            &::before,
+            &::after {
+                display: inline;
+            }
+
+            &::before {
+                content: open-quote;
+            }
+
+            &::after {
+                content: close-quote;
+            }
+        }
+
+        blockquote {
+            font-size: 1.5em;
+            @include copy.separate(1em);
+            quotes: "\201C""\201D""\2018""\2019";
+        }
+
+        figcaption {
+            @extend %set-title;
+        }
+
+        @content;
+    }
+}

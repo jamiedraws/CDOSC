@@ -1,0 +1,137 @@
+$select: ".list" !default;
+
+@mixin new {
+    #{$select} {
+        @include structure;
+
+        @content;
+    }
+}
+
+@mixin structure {
+    margin-left: 1.5rem;
+    list-style: none;
+
+    > * {
+        display: flex;
+        break-inside: avoid;
+        padding: 0;
+
+        &:not(:last-child) {
+            margin-bottom: 1rem;
+        }
+    }
+}
+
+@mixin inline {
+    > * {
+        display: inline-block;
+
+        &:not(:last-child)::after {
+            content: "|";
+        }
+
+        @content;
+    }
+}
+
+@mixin block {
+    > * {
+        display: block;
+
+        &:not(:last-child)::after {
+            content: "";
+        }
+
+        @content;
+    }
+}
+
+@mixin bullet($bullet: "•", $size: 1em) {
+    > * {
+        &::before {
+            display: inline-block;
+            content: $bullet;
+            margin-left: -#{$size};
+            width: #{$size};
+            height: #{$size};
+            flex: 0 0 #{$size};
+
+            @content;
+        }
+    }
+}
+
+@mixin circle($size: 0.5em) {
+    > * {
+        &::before {
+            display: inline-block;
+            content: "";
+            margin: 0 #{$size} 0 -#{$size};
+            width: #{$size};
+            height: #{$size};
+            flex: 0 0 #{$size};
+            border-radius: 100%;
+            position: relative;
+            top: 0.2em;
+
+            @content;
+        }
+    }
+}
+
+@mixin grid($width: 20em, $gap: 2em) {
+    #{$select} {
+        &--grid {
+            column-width: $width;
+            column-rule: 1px solid;
+            list-style: none;
+            margin: 0 -#{$gap};
+            overflow: hidden;
+
+            > * {
+                break-inside: avoid;
+                margin: 0 #{$gap};
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin color($color: currentColor) {
+    > * {
+        &::before {
+            color: $color;
+        }
+    }
+}
+
+@mixin square {
+    #{$select} {
+        &--square {
+            @include bullet("■") {
+                margin-left: -1.5em;
+                width: 1.5em;
+            }
+
+            @content;
+        }
+    }
+}
+
+@mixin disc {
+    #{$select} {
+        &--disc {
+            @include bullet;
+
+            @content;
+        }
+    }
+}
+
+@mixin background-icon($url: "") {
+    @include bullet("") {
+        background: url($url) center center no-repeat;
+    }
+}

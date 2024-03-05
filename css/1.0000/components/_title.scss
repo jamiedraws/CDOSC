@@ -1,0 +1,70 @@
+@use "../../../Shared/css/template/dtm/utils/text";
+@use "../themes/colors";
+@use "../layouts/queries";
+
+$select: ".title" !default;
+
+@mixin new {
+    #{$select} {
+        text-align: center;
+
+        > small {
+            display: block;
+        }
+
+        &__picture {
+            margin: auto;
+        }
+
+        &__desc {
+            text-transform: capitalize;
+        }
+
+        &__italicize {
+            font-style: italic;
+        }
+
+        font-size: 1.8rem;
+
+        @media (max-width: queries.$lg) {
+            font-size: 1.5rem;
+        }
+
+        &__text {
+            font-weight: 800;
+        }
+
+        &--notification {
+            margin: 1em 0;
+            font-weight: bold;
+            font-size: 2rem;
+        }
+
+        p {
+            font-size: 1.1em;
+            font-weight: 500;
+            margin: 0.75em 0;
+        }
+
+        @content;
+    }
+}
+
+@mixin comparison {
+    #{$select} {
+        &--comparison {
+            span {
+                color: colors.$third;
+            }
+
+            #{$select} {
+                &__text {
+                    font-size: 2.7em;
+                    @media (max-width: queries.$md) {
+                        font-size: 1.7em;
+                    }
+                }
+            }
+        }
+    }
+}
